@@ -238,6 +238,7 @@ export default class UserParameter extends Component {
                           value={this.state.i18n.language}
                           onChange={ev => Languages.setLanguage(ev.target.value)}
                         >
+                          <option value="sk">Slovenčina</option>
                           <option value="de">Deutsch</option>
                           <option value="es">Español</option>
                           <option value="en">English</option>

@@ -66,7 +66,7 @@ export async function formatUser(
       ...resUser,
       preferences: {
         ...user.preferences,
-        locale: user.preferences?.language || user.language || "en",
+        locale: user.preferences?.language || user.language || "sk",
         timezone: user.preferences?.timezone || parseInt(user.timezone) || 0,
         allow_tracking: user.preferences?.allow_tracking || false,
       },
