@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * GroupUser
  *
- * @ORM\Table(name="group_user",options={"engine":"MyISAM", "scylladb_keys": {{"group_id":"ASC", "user_id":"DESC", "id":"ASC"}}})
+ * @ORM\Table(name="group_user",options={"engine":"MyISAM", "scylladb_keys": {{"group_id":"ASC", "user_id":"DESC", "id":"ASC"}  , {"user_id":"DESC"}}})
  * @ORM\Entity()
  */
 class GroupUser
@@ -34,7 +34,7 @@ class GroupUser
     protected $group;
 
     /**
-     * @ORM\Column(name="level", type="twake_bigint")
+     * @ORM\Column(name="level", type="integer")
      */
     protected $level;
 
@@ -59,7 +59,7 @@ class GroupUser
     protected $usedappstoday;
 
     /**
-     * @ORM\Column(name="nb_workspace", type="twake_bigint")
+     * @ORM\Column(name="nb_workspace", type="integer")
      */
     protected $nbworkspace;
 
@@ -69,7 +69,7 @@ class GroupUser
     private $date_added;
 
     /**
-     * @ORM\Column(name="last_update_day", type="twake_bigint")
+     * @ORM\Column(name="last_update_day", type="integer")
      */
     protected $lastdayofupdate;
 
