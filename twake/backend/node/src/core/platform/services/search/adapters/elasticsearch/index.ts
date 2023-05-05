@@ -285,7 +285,7 @@ export default class ElasticSearch extends SearchAdapter implements SearchAdapte
     for await (const hit of hits) {
       try {
         entities.push({
-          primaryKey: parsePrimaryKey(entityDefinition, hit._id),
+          primaryKey: parsePrimaryKey(entityDefinition, JSON.stringify([hit._id])),
           score: hit._score,
         });
       } catch (err) {
