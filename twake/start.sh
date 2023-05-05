@@ -4,7 +4,7 @@ set -e
 
 # Setup
 echo Start Setup
-cp -n docker-compose.onpremise.yml docker-compose.yml
+cp -n docker-compose.onpremise.custom.yml docker-compose.yml
 if [ ! -d ./configuration ]; then #create configuration folder
   cp -nR ./default-configuration ./configuration
 else

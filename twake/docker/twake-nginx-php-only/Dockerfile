@@ -38,7 +38,7 @@ RUN apt-get -y install git
 
 # Install php
 
-ADD docker/twake-nginx/site.conf /etc/nginx/sites-available/site.template
+ADD docker/twake-nginx-php-only/site.conf /etc/nginx/sites-available/site.template
 ADD docker/twake-nginx-php-only/nginx.conf /etc/nginx/nginx.conf
 RUN apt-get update && apt-get install gettext-base
 
