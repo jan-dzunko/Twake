@@ -35,7 +35,7 @@ docker-compose pull
 
 docker-compose up -d scylladb rabbitmq
 echo Wait for scylladb to startup
-secs=$((5 * 60))
+secs=10
 while [ $secs -gt 0 ]; do
    echo -ne "$secs\033[0K\r"
    sleep 1
@@ -44,7 +44,7 @@ done
 
 docker-compose up -d php
 echo Wait for PHP to create tables in scylladb
-secs=$((10 * 60))
+secs=50
 while [ $secs -gt 0 ]; do
    echo -ne "$secs\033[0K\r"
    sleep 1
