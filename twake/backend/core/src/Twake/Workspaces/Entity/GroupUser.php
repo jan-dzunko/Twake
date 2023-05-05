@@ -34,7 +34,7 @@ class GroupUser
     protected $group;
 
     /**
-     * @ORM\Column(name="level", type="integer")
+     * @ORM\Column(name="level", type="twake_bigint")
      */
     protected $level;
 
@@ -59,7 +59,7 @@ class GroupUser
     protected $usedappstoday;
 
     /**
-     * @ORM\Column(name="nb_workspace", type="integer")
+     * @ORM\Column(name="nb_workspace", type="twake_bigint")
      */
     protected $nbworkspace;
 
