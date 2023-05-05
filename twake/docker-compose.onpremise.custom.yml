@@ -29,6 +29,7 @@ services:
     environment:
       - NODE_ENV=production
       - PUBSUB_URLS=amqp://guest:guest@rabbitmq:5672
+      - SEARCH_ES_ENDPOINT=http://elasticsearch:9200
     volumes:
       - ./default-configuration/backend-node/production.json:/usr/src/app/config/production.json
       - ./docker-data/documents/:/storage/
@@ -36,6 +37,8 @@ services:
       scylladb:
         condition: service_healthy
       rabbitmq:
+        condition: service_healthy
+      elasticsearch:
         condition: service_healthy
 
   php:
@@ -56,6 +59,26 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    environment:
+      - cluster.name=docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./docker-data/es:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:9200/_cat/nodes?v\\&pretty || exit 1" ]
+    ports:
+      - 9200:9200
 
   nginx:
     build:

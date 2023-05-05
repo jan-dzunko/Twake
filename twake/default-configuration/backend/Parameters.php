@@ -40,7 +40,7 @@ class Parameters extends \Common\Configuration
                 "replication" => "{'class': 'SimpleStrategy', 'replication_factor': '1'}"
             ],
             "es" => [
-              "host" => false
+              "host" => "elasticsearch:9200"
             ],
             "queues" => [
                 "rabbitmq" => [
