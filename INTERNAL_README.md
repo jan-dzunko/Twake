@@ -26,3 +26,8 @@ docker compose pull
 
 docker compose up -d --build
 ```
+
+# CQLSH
+```shell
+docker compose exec -it scylladb /bin/bash
+```
