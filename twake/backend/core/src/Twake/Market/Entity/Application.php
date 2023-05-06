@@ -11,7 +11,7 @@ use Twake\Core\Entity\SearchableObject;
 /**
  * Application
  *
- * @ORM\Table(name="application",options={"engine":"MyISAM", "scylladb_keys": {{"group_id": "ASC", "app_group_name": "ASC", "id": "ASC"}, {"id": "ASC"}, {"simple_name": "ASC"}, {"is_default": "ASC"}}})
+ * @ORM\Table(name="applications",options={"engine":"MyISAM", "scylladb_keys": {{"group_id": "ASC", "app_group_name": "ASC", "id": "ASC"}, {"id": "ASC"}, {"simple_name": "ASC"}, {"is_default": "ASC"}}})
  * @ORM\Entity()
  */
 class Application extends SearchableObject
@@ -150,6 +150,11 @@ class Application extends SearchableObject
      * @ORM\Column(name="display_configuration", type="twake_text")
      */
     protected $display_configuration = "{}";
+
+    /**
+     * @ORM\Column(name="publication", type="twake_text")
+     */
+    protected $publication = "{}";
 
     /**
      * Application constructor.
@@ -548,6 +553,30 @@ class Application extends SearchableObject
             $display_configuration = $_display_configuration;
         }
         $this->display_configuration = json_encode($display_configuration);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPublication()
+    {
+        return json_decode($this->publication, true);
+    }
+
+    /**
+     * @param mixed $publication
+     */
+    public function setPublication($publication)
+    {
+        if (is_string($publication)) {
+            try {
+                $_publication = json_decode($publication, true);
+            } catch (\Exception $e) {
+                $_publication = $publication;
+            }
+            $publication = $_publication;
+        }
+        $this->publication = json_encode($publication);
     }
 
 

@@ -62,9 +62,11 @@ class InitCommand extends ContainerAwareCommand
         $app->setPublic(!!$configuration);
         $app->setIsAvailableToPublic(!!$configuration);
         $app->setTwakeTeamValidation(!!$configuration);
+        $app->setPublication(json_decode('{"published":true,"pending":false}', true));
         $app->setDisplayConfiguration(json_decode('{"messages_module":{"in_plus":true},"channel_tab":true,"app":true}', true));
         $app->setDefault(isset($configuration["default"]) && $configuration["default"]);
         $manager->persist($app);
+        $this->getApp()->getServices()->get("app.applications")->toggleAppValidation($app->getId(), true);
         $manager->flush();
 
         $configuration = $this->getApp()->getContainer()->getParameter("defaults.applications.twake_calendar");
@@ -83,10 +85,12 @@ class InitCommand extends ContainerAwareCommand
         $app->setPublic(!!$configuration);
         $app->setIsAvailableToPublic(!!$configuration);
         $app->setTwakeTeamValidation(!!$configuration);
+        $app->setPublication(json_decode('{"published":true,"pending":false}', true));
         $app->setDisplayConfiguration(json_decode(/*'{"messages_module":{"in_plus":true},*/
             '{"app":true, "channel_tab": true}', true));
         $app->setDefault(isset($configuration["default"]) && $configuration["default"]);
         $manager->persist($app);
+        $this->getApp()->getServices()->get("app.applications")->toggleAppValidation($app->getId(), true);
         $manager->flush();
 
         $configuration = $this->getApp()->getContainer()->getParameter("defaults.applications.twake_tasks");
@@ -105,10 +109,12 @@ class InitCommand extends ContainerAwareCommand
         $app->setPublic(!!$configuration);
         $app->setIsAvailableToPublic(!!$configuration);
         $app->setTwakeTeamValidation(!!$configuration);
+        $app->setPublication(json_decode('{"published":true,"pending":false}', true));
         $app->setDisplayConfiguration(json_decode(/*'{"messages_module":{"in_plus":true},*/
             '{"channel_tab":true, "app":true}', true));
         $app->setDefault(isset($configuration["default"]) && $configuration["default"]);
         $manager->persist($app);
+        $this->getApp()->getServices()->get("app.applications")->toggleAppValidation($app->getId(), true);
         $manager->flush();
 
         @file_put_contents("/twake.status.init", "1");
