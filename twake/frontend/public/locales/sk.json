@@ -444,7 +444,7 @@
     "scenes.app.popup.workspaceparameter.pages.deleteworkspace": "Odstrániť pracovný priestor",
     "scenes.app.popup.workspaceparameter.pages.error_workspace_member": "Musíte byť jediným členom pracovného priestoru, aby ste ho mohli odstrániť. Odstráňte spolupracovníkov a skúste to znovu.",
     "scenes.app.popup.workspaceparameter.pages.deleteworkspace_description": "Odstránením pracovného priestoru sa nejde vrátiť späť. Všetky správy a súbory budú nenávratne stratené.",
-    "scenes.app.popup.workspaceparameter.pages.enter": "Vstup do ",
+    "scenes.app.popup.workspaceparameter.pages.enter": "Napíšte ",
     "scenes.app.popup.workspaceparameter.pages.access_apps": "Pristupujte k svojim aplikáciám a konektorom",
     "scenes.app.popup.workspaceparameter.pages.moderator_status": "Moderátor pracovného priestoru",
     "scenes.app.popup.workspaceparameter.pages.alert_impossible_removing": "Nemôžete opustiť pracovný priestor, pretože ste posledný správca. Môžete určiť nového správcu alebo odstrániť/ archivovať tento pracovný priestor.",
