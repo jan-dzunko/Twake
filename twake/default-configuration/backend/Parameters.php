@@ -136,11 +136,11 @@ class Parameters extends \Common\Configuration
             //Defaults values for all clients but editable in database
             "defaults" => [
               "applications" => [
-                "twake_drive" => [ "default" => true ], //False to not install
-                "twake_calendar" => [ "default" => true ],
-                "twake_tasks" => [ "default" => true ],
+                "twake_drive" => false, //False to not install
+                "twake_calendar" => false,
+                "twake_tasks" => false,
                 "connectors" => [
-                  "jitsi" => [ "default" => true ],
+                  "jitsi" => false,
                 ]
               ],
               "connectors" => [
