@@ -4,7 +4,7 @@ set -e
 
 # Setup
 echo Start Setup
-cp -n docker-compose.onpremise.custom.yml docker-compose.yml
+cp -n docker compose.onpremise.custom.yml docker compose.yml
 if [ ! -d ./configuration ]; then #create configuration folder
   cp -nR ./default-configuration ./configuration
 else
@@ -22,6 +22,7 @@ data_folders=(\
 	./docker-data/scylladb \
 	./docker-data/uploads \
 	./docker-data/ssl \
+	./docker-data/es \
 	./connectors \
 	)
 for folder in "${data_folders[@]}"; do #create mounted folders
@@ -30,19 +31,21 @@ for folder in "${data_folders[@]}"; do #create mounted folders
   fi
 done
 
-# Run
-docker-compose pull
+chmod 777 ./docker-data/es
 
-docker-compose up -d scylladb rabbitmq
+# Run
+docker compose pull
+
+docker compose up -d scylladb rabbitmq elasticsearch
 echo Wait for scylladb to startup
-secs=10
+secs=35
 while [ $secs -gt 0 ]; do
    echo -ne "$secs\033[0K\r"
    sleep 1
    : $((secs--))
 done
 
-docker-compose up -d php
+docker compose up -d php
 echo Wait for PHP to create tables in scylladb
 secs=50
 while [ $secs -gt 0 ]; do
@@ -51,6 +54,6 @@ while [ $secs -gt 0 ]; do
    : $((secs--))
 done
 
-docker-compose up -d
+docker compose up -d
 echo Finished
 
