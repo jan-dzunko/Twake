@@ -10,7 +10,7 @@ import {
 } from "../../../../utils/types";
 import Application, {
   ApplicationObject,
-  PublicApplicationObject,
+  PublicApplicationObject, TYPE,
 } from "../../entities/application";
 import {
   CrudException,
@@ -25,6 +25,8 @@ import { hasCompanyAdminLevel } from "../../../../utils/company";
 import gr from "../../../global-resolver";
 import config from "../../../../core/config";
 import axios from "axios";
+import PhpApplication, {TYPE as phpTYPE} from "src/cli/cmds/migration_cmds/php-application/php-application-entity";
+import {importDepreciatedFields} from "src/cli/cmds/migration_cmds/application";
 
 export class ApplicationController
   implements
@@ -184,7 +186,7 @@ export class ApplicationController
     }
   }
 
-  async createDefault(
+  async migrate(
     request: FastifyRequest<{
       Params: { application_id: string };
       Body: { resource: Application };
@@ -192,84 +194,33 @@ export class ApplicationController
     _reply: FastifyReply,
   ): Promise<ResourceGetResponse<ApplicationObject[] | PublicApplicationObject[]>> {
     try {
-      const now = new Date().getTime();
+      const phpRepository = await gr.database.getRepository<PhpApplication>(phpTYPE, PhpApplication);
+      const repository = await gr.database.getRepository<Application>(TYPE, Application);
 
+      let page: Pagination = { limitStr: "100" };
       let entities: Application[] = [];
+      let replaceExisting = true;
 
-      const apps = [
-        {
-          company_id: "00000000-0000-1000-0000-000000000000",
-          is_default: true,
-          identity: {
-            code: "twake_drive",
-            name: "Dokumenty",
-            icon: "/public/img/twake-emoji/twake-drive.png",
-            description: "Twake file storage application.",
-            website: "https://twake.app/",
-            categories: [],
-            compatibility: ["twake"]
-          },
-          publication: {published: true, requested: false},
-          stats: {created_at: now, updated_at: now, version: 1},
-          api: {
-            hooks_url: "",
-            allowed_ips: "",
-            private_key: "nrCkp28Z1vQw8YC7GtcZV5JAtmoSGOPhEpYGn7Xf2MiUzEDCABCbqJWRMrHkLGEbyeqXSKdeCmD7PCYafnnv16oDWXyg9btqFI7MaJmXmKBLHSSud8Aq3KWpxVZQHKCGWYJMrwNN"
-          },
-          access: {read: [], write: [], delete: [], hooks: []},
-          display: {twake: {tab: true, standalone: true, configuration: []}}
-        },
-        {
-          company_id: "00000000-0000-1000-0000-000000000000",
-          is_default: true,
-          identity: {
-            code: "twake_calendar",
-            name: "Kalendár",
-            icon: "/public/img/twake-emoji/twake-calendar.png",
-            description: "Twake's shared calendar app.",
-            website: "https://twake.app/",
-            categories: [],
-            compatibility: ["twake"]
-          },
-          publication: {published: true, requested: false},
-          stats: {created_at: now, updated_at: now, version: 1},
-          api: {
-            hooks_url: "",
-            allowed_ips: "",
-            private_key: "Ak9Ykx1eR6XRRxDEiFFdLZ2SkrgKvfqddAep8pVHCnZE1gg9VYWrVENuhilejVNmsP3Vuo7u9kfmpt0HzdOryz36H62MAPBhxVakCA0OVLzVzIIJBN6OkecWOTxaSVaFsXF5Kggg"
-          },
-          access: {read: [], write: [], delete: [], hooks: []},
-          display: {twake: {tab: true, standalone: true, configuration: []}}
-        },
-        {
-          company_id: "00000000-0000-1000-0000-000000000000",
-          is_default: true,
-          identity: {
-            code: "twake_tasks",
-            name: "Úlohy",
-            icon: "/public/img/twake-emoji/twake-tasks.png",
-            description: "Twake task management application.",
-            website: "https://twake.app/",
-            categories: [],
-            compatibility: ["twake"]
-          },
-          publication: {published: true, requested: false},
-          stats: {created_at: now, updated_at: now, version: 1},
-          api: {
-            hooks_url: "",
-            allowed_ips: "",
-            private_key: "zu2SXbnmO8Io7hIX6Uwmk879CIHzlg5AoOx6PhmBEPjsravDhVmvmr4s0U5ZoxOCafQsYjkdQbKbxndsXyTnpaAiZf3k3Q4VIXopomn2DDyUuYgCpntJbYSxYd5SQ41d3wb5Ggkk"
-          },
-          access: {read: [], write: [], delete: [], hooks: []},
-          display: {twake: {tab: true, standalone: true, configuration: []}}
-        },
-      ] as Application[];
+      do {
+        const applicationListResult = await phpRepository.find({}, { pagination: page }, undefined);
+        page = applicationListResult.nextPage as Pagination;
 
-      for (const app of apps) {
-        const res = await gr.services.applications.marketplaceApps.save(app as Application);
-
-        entities.push(res.entity);
-      }
+        for (const application of applicationListResult.getEntities()) {
+          if (
+              !(await repository.findOne(
+                  {
+                    id: application.id,
+                  },
+                  {},
+                  undefined,
+              )) ||
+              replaceExisting
+          ) {
+            const newApplication = importDepreciatedFields(application);
+            await repository.save(newApplication, undefined);
+          }
+        }
+      } while (page.page_token);
 
       return {
         resource: entities,

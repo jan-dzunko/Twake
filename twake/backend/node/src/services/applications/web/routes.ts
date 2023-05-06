@@ -73,9 +73,9 @@ const routes: FastifyPluginCallback = (fastify: FastifyInstance, options, next) 
   //Create default apps to the marketplace
   fastify.route({
     method: "GET",
-    url: `${applicationsUrl}/create-default`,
+    url: `${applicationsUrl}/migrate`,
     preValidation: [fastify.authenticate],
-    handler: applicationController.createDefault.bind(applicationController),
+    handler: applicationController.migrate.bind(applicationController),
   });
 
   //Get a single application in the marketplace
