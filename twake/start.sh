@@ -31,7 +31,7 @@ for folder in "${data_folders[@]}"; do #create mounted folders
   fi
 done
 
-chmod 777 ./docker-data/es
+chmod 777 ./docker-data
 
 # Run
 docker compose pull
