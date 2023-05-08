@@ -15,11 +15,13 @@ cd twake
 cp -n docker-compose.onpremise.custom.yml docker-compose.yml
 cp -nR default-configuration/ configuration/
 ```
-- 
+
 - setup apache2 configuration
 
 ```shell
 cd twake
+sudo chown -R 1000:root ./docker-data/es
+
 ./start.sh
 ```
 

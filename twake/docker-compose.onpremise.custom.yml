@@ -31,7 +31,7 @@ services:
       - PUBSUB_URLS=amqp://guest:guest@rabbitmq:5672
       - SEARCH_ES_ENDPOINT=http://elasticsearch:9200
     volumes:
-      - ./default-configuration/backend-node/production.json:/usr/src/app/config/production.json
+      - ./configuration/backend-node/production.json:/usr/src/app/config/production.json
       - ./docker-data/documents/:/storage/
     depends_on:
       scylladb:
@@ -48,7 +48,7 @@ services:
     environment:
       - DEV=production
     volumes:
-      - ./default-configuration/backend/Parameters.php:/configuration/Parameters.php
+      - ./configuration/backend/Parameters.php:/configuration/Parameters.php
       - ./connectors/:/twake-core/src/BuiltInConnectors/Connectors
       - ./docker-data/drive/:/twake-core/drive/
       - ./docker-data/fpm/:/etc/docker-data/fpm/
