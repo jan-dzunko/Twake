@@ -50,7 +50,7 @@ class InitCommand extends ContainerAwareCommand
         $app = null;
         $app = $manager->getRepository("Twake\Market:Application")->findOneBy(Array("simple_name" => "twake_drive"));
         if (!$app) {
-            $app = new Application(new FakeCassandraTimeuuid(), "Documents");
+            $app = new Application(new FakeCassandraTimeuuid(), "Dokumenty");
             $app->setApiPrivateKey($app->generatePrivateApiKey());
         }
         $app->setEsIndexed(false);
@@ -71,7 +71,7 @@ class InitCommand extends ContainerAwareCommand
         $app = null;
         $app = $manager->getRepository("Twake\Market:Application")->findOneBy(Array("simple_name" => "twake_calendar"));
         if (!$app) {
-            $app = new Application(new FakeCassandraTimeuuid(), "Calendar");
+            $app = new Application(new FakeCassandraTimeuuid(), "Kalendár");
             $app->setApiPrivateKey($app->generatePrivateApiKey());
         }
         $app->setEsIndexed(false);
@@ -93,7 +93,7 @@ class InitCommand extends ContainerAwareCommand
         $app = null;
         $app = $manager->getRepository("Twake\Market:Application")->findOneBy(Array("simple_name" => "twake_tasks"));
         if (!$app) {
-            $app = new Application(new FakeCassandraTimeuuid(), "Tasks");
+            $app = new Application(new FakeCassandraTimeuuid(), "Úlohy");
             $app->setApiPrivateKey($app->generatePrivateApiKey());
         }
         $app->setEsIndexed(false);
